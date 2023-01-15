@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 import string
 from django.utils.crypto import get_random_string
+from django.contrib.auth.models import User
 
 def generate_hex_token():
     return uuid.uuid1().hex
@@ -65,3 +66,8 @@ class CallbackToken(AbstractBaseCallbackToken):
 
     class Meta(AbstractBaseCallbackToken.Meta):
         verbose_name = 'Callback Token'
+
+
+class Mobile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    mobile = models.CharField(max_length=15, unique=True )

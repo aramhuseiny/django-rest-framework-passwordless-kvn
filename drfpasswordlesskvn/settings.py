@@ -52,7 +52,7 @@ DEFAULTS = {
     'PASSWORDLESS_MOBILE_MESSAGE': "Use this code to log in: %s",
 
     # Registers previously unseen aliases as new users.
-    'PASSWORDLESS_REGISTER_NEW_USERS': True,
+    'PASSWORDLESS_REGISTER_NEW_USERS': False,
 
     # Suppresses actual SMS for testing
     'PASSWORDLESS_TEST_SUPPRESSION': False,

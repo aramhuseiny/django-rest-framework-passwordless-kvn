@@ -175,30 +175,31 @@ def send_sms_with_callback_token(user, mobile_token, **kwargs):
     base_string = kwargs.get('mobile_message', api_settings.PASSWORDLESS_MOBILE_MESSAGE)
 
     try:
-        if api_settings.PASSWORDLESS_MOBILE_NOREPLY_NUMBER:
+        # if api_settings.PASSWORDLESS_MOBILE_NOREPLY_NUMBER:
             # We need a sending number to send properly
-            to_number = getattr(user, api_settings.PASSWORDLESS_USER_MOBILE_FIELD_NAME)
-            if to_number.__class__.__name__ == 'PhoneNumber':
-                to_number = to_number.__str__()
-            from kavenegar import *
-            try:
-                api = KavenegarAPI(os.environ['KAVENEGAR_API_KEY'], timeout=20)
-                params = {
-                    'receptor': to_number,
-                    'template': base_string,
-                    'token': mobile_token.key,
-                    'type': os.environ['KAVENEGAR_OTP_TYPE'],#sms vs call
-                }   
+        print(user)
+        to_number = getattr(user, api_settings.PASSWORDLESS_USER_MOBILE_FIELD_NAME)
+        if to_number.__class__.__name__ == 'PhoneNumber':
+            to_number = to_number.__str__()
+        from kavenegar import KavenegarAPI, APIException, HTTPException
+        try:
+            api = KavenegarAPI(os.environ['KAVENEGAR_API_KEY'], timeout=20)
+            params = {
+                'receptor': to_number,
+                'template': base_string,
+                'token': mobile_token.key,
+                'type': os.environ['KAVENEGAR_OTP_TYPE'],#sms vs call
+            }   
             response = api.verify_lookup(params)
             print(response)
-            except APIException as e: 
+        except APIException as e: 
             print(e)
-            except HTTPException as e: 
+        except HTTPException as e: 
             print(e)
-            return True
-        else:
-            logger.debug("Failed to send token sms. Missing PASSWORDLESS_MOBILE_NOREPLY_NUMBER.")
-            return False
+        return True
+        # else:
+        #     logger.debug("Failed to send token sms. Missing PASSWORDLESS_MOBILE_NOREPLY_NUMBER.")
+        #     return False
     except ImportError:
         logger.debug("Couldn't import Twilio client. Is twilio installed?")
         return False

@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.validators import RegexValidator
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from drfpasswordlesskvn.models import CallbackToken
+from drfpasswordlesskvn.models import CallbackToken, Mobile
 from drfpasswordlesskvn.settings import api_settings
 from drfpasswordlesskvn.utils import verify_user_alias, validate_token_age
 
@@ -44,6 +44,10 @@ class AbstractBaseAliasAuthenticationSerializer(serializers.Serializer):
             if api_settings.PASSWORDLESS_REGISTER_NEW_USERS is True:
                 # If new aliases should register new users.
                 try:
+                    if alias == 'mobile':
+                        mobile = Mobile.objects.filter(mobile = attrs['mobile'])
+                        user = mobile.user
+
                     user = User.objects.get(**{self.alias_type+'__iexact': alias})
                 except User.DoesNotExist:
                     user = User.objects.create(**{self.alias_type: alias})
@@ -52,7 +56,12 @@ class AbstractBaseAliasAuthenticationSerializer(serializers.Serializer):
             else:
                 # If new aliases should not register new users.
                 try:
-                    user = User.objects.get(**{self.alias_type+'__iexact': alias})
+                    if self.alias_type == 'mobile':
+                        mobile = Mobile.objects.filter(mobile = attrs['mobile'])
+                        user = User.objects.get(id=mobile.first().user_id)
+
+                    else:
+                        user = User.objects.get(**{self.alias_type+'__iexact': alias})
                 except User.DoesNotExist:
                     user = None
 
