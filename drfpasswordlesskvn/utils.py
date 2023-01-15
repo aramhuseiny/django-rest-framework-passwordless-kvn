@@ -6,8 +6,8 @@ from django.core.mail import send_mail
 from django.template import loader
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
-from drfpasswordless.models import CallbackToken
-from drfpasswordless.settings import api_settings
+from drfpasswordlesskvn.models import CallbackToken
+from drfpasswordlesskvn.settings import api_settings
 
 
 logger = logging.getLogger(__name__)
@@ -26,11 +26,11 @@ def authenticate_by_token(callback_token):
         return token.user
 
     except CallbackToken.DoesNotExist:
-        logger.debug("drfpasswordless: Challenged with a callback token that doesn't exist.")
+        logger.debug("drfpasswordlesskvn: Challenged with a callback token that doesn't exist.")
     except User.DoesNotExist:
-        logger.debug("drfpasswordless: Authenticated user somehow doesn't exist.")
+        logger.debug("drfpasswordlesskvn: Authenticated user somehow doesn't exist.")
     except PermissionDenied:
-        logger.debug("drfpasswordless: Permission denied while authenticating.")
+        logger.debug("drfpasswordlesskvn: Permission denied while authenticating.")
 
     return None
 
@@ -177,19 +177,24 @@ def send_sms_with_callback_token(user, mobile_token, **kwargs):
     try:
         if api_settings.PASSWORDLESS_MOBILE_NOREPLY_NUMBER:
             # We need a sending number to send properly
-
-            from twilio.rest import Client
-            twilio_client = Client(os.environ['TWILIO_ACCOUNT_SID'], os.environ['TWILIO_AUTH_TOKEN'])
-
             to_number = getattr(user, api_settings.PASSWORDLESS_USER_MOBILE_FIELD_NAME)
             if to_number.__class__.__name__ == 'PhoneNumber':
                 to_number = to_number.__str__()
-
-            twilio_client.messages.create(
-                body=base_string % mobile_token.key,
-                to=to_number,
-                from_=api_settings.PASSWORDLESS_MOBILE_NOREPLY_NUMBER
-            )
+            from kavenegar import *
+            try:
+                api = KavenegarAPI(os.environ['KAVENEGAR_API_KEY'], timeout=20)
+                params = {
+                    'receptor': to_number,
+                    'template': base_string,
+                    'token': mobile_token.key,
+                    'type': os.environ['KAVENEGAR_OTP_TYPE'],#sms vs call
+                }   
+            response = api.verify_lookup(params)
+            print(response)
+            except APIException as e: 
+            print(e)
+            except HTTPException as e: 
+            print(e)
             return True
         else:
             logger.debug("Failed to send token sms. Missing PASSWORDLESS_MOBILE_NOREPLY_NUMBER.")

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('drfpasswordless', '0001_initial'),
+        ('drfpasswordlesskvn', '0001_initial'),
     ]
 
     operations = [

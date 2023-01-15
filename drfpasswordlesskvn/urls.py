@@ -1,6 +1,6 @@
-from drfpasswordless.settings import api_settings
+from drfpasswordlesskvn.settings import api_settings
 from django.urls import path
-from drfpasswordless.views import (
+from drfpasswordlesskvn.views import (
      ObtainEmailCallbackToken,
      ObtainMobileCallbackToken,
      ObtainAuthTokenFromCallbackToken,
@@ -9,7 +9,7 @@ from drfpasswordless.views import (
      ObtainMobileVerificationCallbackToken,
 )
 
-app_name = 'drfpasswordless'
+app_name = 'drfpasswordlesskvn'
 
 urlpatterns = [
      path(api_settings.PASSWORDLESS_AUTH_PREFIX + 'email/', ObtainEmailCallbackToken.as_view(), name='auth_email'),

@@ -4,9 +4,9 @@ from rest_framework import parsers, renderers, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated 
 from rest_framework.views import APIView
-from drfpasswordless.models import CallbackToken
-from drfpasswordless.settings import api_settings
-from drfpasswordless.serializers import (
+from drfpasswordlesskvn.models import CallbackToken
+from drfpasswordlesskvn.settings import api_settings
+from drfpasswordlesskvn.serializers import (
     EmailAuthSerializer,
     MobileAuthSerializer,
     CallbackTokenAuthSerializer,
@@ -14,7 +14,7 @@ from drfpasswordless.serializers import (
     EmailVerificationSerializer,
     MobileVerificationSerializer,
 )
-from drfpasswordless.services import TokenService
+from drfpasswordlesskvn.services import TokenService
 
 logger = logging.getLogger(__name__)
 

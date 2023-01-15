@@ -1,17 +1,17 @@
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from drfpasswordless.settings import api_settings
-from drfpasswordless.views import (ObtainEmailCallbackToken,
+from drfpasswordlesskvn.settings import api_settings
+from drfpasswordlesskvn.views import (ObtainEmailCallbackToken,
                                    ObtainMobileCallbackToken,
                                    ObtainAuthTokenFromCallbackToken,
                                    VerifyAliasFromCallbackToken,
                                    ObtainEmailVerificationCallbackToken,
                                    ObtainMobileVerificationCallbackToken, )
 
-app_name = 'drfpasswordless'
+app_name = 'drfpasswordlesskvn'
 
 urlpatterns = [
-    path('', include('drfpasswordless.urls')),
+    path('', include('drfpasswordlesskvn.urls')),
 ]
 
 format_suffix_patterns(urlpatterns)

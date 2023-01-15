@@ -5,9 +5,9 @@ from django.core.exceptions import PermissionDenied
 from django.core.validators import RegexValidator
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from drfpasswordless.models import CallbackToken
-from drfpasswordless.settings import api_settings
-from drfpasswordless.utils import verify_user_alias, validate_token_age
+from drfpasswordlesskvn.models import CallbackToken
+from drfpasswordlesskvn.settings import api_settings
+from drfpasswordlesskvn.utils import verify_user_alias, validate_token_age
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -264,25 +264,25 @@ class CallbackTokenVerificationSerializer(AbstractBaseCallbackTokenSerializer):
                 # Mark this alias as verified
                 success = verify_user_alias(user, token)
                 if success is False:
-                    logger.debug("drfpasswordless: Error verifying alias.")
+                    logger.debug("drfpasswordlesskvn: Error verifying alias.")
 
                 attrs['user'] = user
                 return attrs
             else:
                 msg = _('This token is invalid. Try again later.')
-                logger.debug("drfpasswordless: User token mismatch when verifying alias.")
+                logger.debug("drfpasswordlesskvn: User token mismatch when verifying alias.")
 
         except CallbackToken.DoesNotExist:
             msg = _('We could not verify this alias.')
-            logger.debug("drfpasswordless: Tried to validate alias with bad token.")
+            logger.debug("drfpasswordlesskvn: Tried to validate alias with bad token.")
             pass
         except User.DoesNotExist:
             msg = _('We could not verify this alias.')
-            logger.debug("drfpasswordless: Tried to validate alias with bad user.")
+            logger.debug("drfpasswordlesskvn: Tried to validate alias with bad user.")
             pass
         except PermissionDenied:
             msg = _('Insufficient permissions.')
-            logger.debug("drfpasswordless: Permission denied while validating alias.")
+            logger.debug("drfpasswordlesskvn: Permission denied while validating alias.")
             pass
 
         raise serializers.ValidationError(msg)

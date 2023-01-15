@@ -77,16 +77,16 @@ DEFAULTS = {
 
     # What function is called to construct an authentication tokens when
     # exchanging a passwordless token for a real user auth token.
-    'PASSWORDLESS_AUTH_TOKEN_CREATOR': 'drfpasswordless.utils.create_authentication_token',
+    'PASSWORDLESS_AUTH_TOKEN_CREATOR': 'drfpasswordlesskvn.utils.create_authentication_token',
 
     # What function is called to construct a serializer for drf tokens when
     # exchanging a passwordless token for a real user auth token.
-    'PASSWORDLESS_AUTH_TOKEN_SERIALIZER': 'drfpasswordless.serializers.TokenResponseSerializer',
+    'PASSWORDLESS_AUTH_TOKEN_SERIALIZER': 'drfpasswordlesskvn.serializers.TokenResponseSerializer',
 
     # A dictionary of demo user's primary key mapped to their static pin
     'PASSWORDLESS_DEMO_USERS': {},
-    'PASSWORDLESS_EMAIL_CALLBACK': 'drfpasswordless.utils.send_email_with_callback_token',
-    'PASSWORDLESS_SMS_CALLBACK': 'drfpasswordless.utils.send_sms_with_callback_token',
+    'PASSWORDLESS_EMAIL_CALLBACK': 'drfpasswordlesskvn.utils.send_email_with_callback_token',
+    'PASSWORDLESS_SMS_CALLBACK': 'drfpasswordlesskvn.utils.send_sms_with_callback_token',
 
     # Token Generation Retry Count
     'PASSWORDLESS_TOKEN_GENERATION_ATTEMPTS': 3

@@ -14,19 +14,19 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-name = 'drfpasswordless'
+name = 'drfpasswordlesskvn'
 
-NAME = 'drfpasswordless'
-DESCRIPTION = 'Passwordless auth for Django Rest Framework Token Authentication.'
-URL = 'https://github.com/aaronn/django-rest-framework-passwordless'
-EMAIL = 'email@0xaaron.com'
-AUTHOR = 'Aaron N.'
+NAME = 'drfpasswordlesskvn'
+DESCRIPTION = 'Passwordless auth for Django Rest Framework Token Authentication using Kavenegar.'
+URL = 'https://github.com/aramhuseiny/django-rest-framework-passwordless-kvn'
+EMAIL = 'huseiny.aram@gmail.com'
+AUTHOR = 'Hedi'
 REQUIRES_PYTHON = '>=3'
 VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'Django', 'djangorestframework'
+    'Django', 'djangorestframework', 'kavenegar'
 ]
 
 # The rest you shouldn't have to touch too much :)
