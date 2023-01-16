@@ -26,7 +26,7 @@ VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'Django', 'djangorestframework', 'kavenegar'
+    'Django', 'djangorestframework', 'kavenegar', 'python-dotenv'
 ]
 
 # The rest you shouldn't have to touch too much :)

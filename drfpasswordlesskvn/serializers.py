@@ -57,8 +57,8 @@ class AbstractBaseAliasAuthenticationSerializer(serializers.Serializer):
                 # If new aliases should not register new users.
                 try:
                     if self.alias_type == 'mobile':
-                        mobile = Mobile.objects.filter(mobile = attrs['mobile'])
-                        user = User.objects.get(id=mobile.first().user_id)
+                        user = Mobile.objects.filter(mobile = attrs['mobile']).first().user
+                        #user = mobile.first().user #User.objects.get(id=mobile.first().user_id)
 
                     else:
                         user = User.objects.get(**{self.alias_type+'__iexact': alias})
@@ -211,7 +211,8 @@ class CallbackTokenAuthSerializer(AbstractBaseCallbackTokenSerializer):
         try:
             alias_type, alias = self.validate_alias(attrs)
             callback_token = attrs.get('token', None)
-            user = User.objects.get(**{alias_type+'__iexact': alias})
+            # user =  User.objects.get(**{alias_type+'__iexact': alias})
+            user = Mobile.objects.filter(mobile = attrs['mobile']).first().user
             token = CallbackToken.objects.get(**{'user': user,
                                                  'key': callback_token,
                                                  'type': CallbackToken.TOKEN_TYPE_AUTH,

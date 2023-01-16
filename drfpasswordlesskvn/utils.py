@@ -8,8 +8,9 @@ from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from drfpasswordlesskvn.models import CallbackToken
 from drfpasswordlesskvn.settings import api_settings
+from dotenv import load_dotenv
 
-
+load_dotenv(os.getcwd() + "/.env")
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
@@ -177,24 +178,27 @@ def send_sms_with_callback_token(user, mobile_token, **kwargs):
     try:
         # if api_settings.PASSWORDLESS_MOBILE_NOREPLY_NUMBER:
             # We need a sending number to send properly
-        print(user)
         to_number = getattr(user, api_settings.PASSWORDLESS_USER_MOBILE_FIELD_NAME)
         if to_number.__class__.__name__ == 'PhoneNumber':
             to_number = to_number.__str__()
         from kavenegar import KavenegarAPI, APIException, HTTPException
         try:
-            api = KavenegarAPI(os.environ['KAVENEGAR_API_KEY'], timeout=20)
+            
+            api = KavenegarAPI(os.environ['KAVENEGAR_API_KEY'])
             params = {
-                'receptor': to_number,
-                'template': base_string,
-                'token': mobile_token.key,
-                'type': os.environ['KAVENEGAR_OTP_TYPE'],#sms vs call
+                'message': mobile_token.key,
+                'receptor': to_number.mobile,
+                # 'template': base_string,
+                # 'token': mobile_token.key,
+                # 'type': os.environ['KAVENEGAR_OTP_TYPE'],#sms vs call
             }   
-            response = api.verify_lookup(params)
+            response = api.sms_send(params)
             print(response)
         except APIException as e: 
             print(e)
         except HTTPException as e: 
+            print(e)
+        except Exception as e:
             print(e)
         return True
         # else:
