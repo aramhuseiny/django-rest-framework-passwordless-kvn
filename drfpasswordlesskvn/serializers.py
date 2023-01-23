@@ -57,7 +57,10 @@ class AbstractBaseAliasAuthenticationSerializer(serializers.Serializer):
                 # If new aliases should not register new users.
                 try:
                     if self.alias_type == 'mobile':
-                        user = Mobile.objects.filter(mobile = attrs['mobile']).first().user
+                        mobile = Mobile.objects.filter(mobile = attrs['mobile'])
+                        user = None
+                        if mobile:
+                            user = mobile.first().user
                         #user = mobile.first().user #User.objects.get(id=mobile.first().user_id)
 
                     else:
